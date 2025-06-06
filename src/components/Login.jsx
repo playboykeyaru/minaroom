@@ -1,121 +1,94 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
-export default function Login() {
-  const basePath = import.meta.env.BASE_URL;
+const basePath = import.meta.env.BASE_URL || '/';
 
-  // Helper to avoid spawning kitty heads in middle 40%-60% of screen width
-  const getRandomLeft = () => {
-    const leftSide = Math.random() * 40;        // 0% to 40%
-    const rightSide = 60 + Math.random() * 40;  // 60% to 100%
-    return Math.random() < 0.5 ? leftSide : rightSide;
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [kittyHeads, setKittyHeads] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const totalHeads = 18;
+    const heads = [...Array(totalHeads)].map(() => {
+      return {
+        id: crypto.randomUUID(),
+        left: Math.random() < 0.5 ? Math.random() * 40 : 60 + Math.random() * 40,
+        duration: 10 + Math.random() * 5,
+        delay: -(Math.random() * 5),
+        rotation: Math.random() * 60 - 30,
+      };
+    });
+    setKittyHeads(heads);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username === 'minh' && password === 'mina1303') {
+      navigate('/room');
+    } else {
+      alert("Wrong username or password!");
+    }
   };
 
   return (
-    <div style={styles.page}>
-      <div style={styles.loginBox}>
+    <div className="login-container">
+      {/* Floaty Kitty Heads */}
+      {kittyHeads.map((head) => (
+        <img
+          key={head.id}
+          src={`${basePath}HKloginfloat.png`}
+          alt="Floating Kitty"
+          className="floating-kitty"
+          style={{
+            left: `${head.left}%`,
+            animationDuration: `${head.duration}s`,
+            animationDelay: `${head.delay}s`,
+            transform: `rotate(${head.rotation}deg)`,
+          }}
+        />
+      ))}
+
+      <form className="login-box" onSubmit={handleSubmit}>
         <img
           src={`${basePath}HKloginLogo.png`}
-          alt="Hello Kitty Logo"
-          style={styles.logo}
+          alt="Hello Kitty"
+          className="login-logo"
         />
 
         <input
           type="text"
-          placeholder="Username"
-          style={styles.input}
-          autoComplete="off"
+          placeholder="Name"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="login-input"
         />
+
         <input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           placeholder="Password"
-          style={styles.input}
-          autoComplete="off"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="login-input"
         />
 
-        <button style={styles.button}>Login</button>
-      </div>
+        {/* Show Password Toggle */}
+        <label className="show-password">
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          Show Password
+        </label>
 
-     {[...Array(16)].map((_, i) => (
-  <img
-    key={i}
-    src={`${basePath}HKloginfloat.png`}
-    alt="Floating Kitty Head"
-    style={{
-      ...styles.floatingHead,
-      animationDelay: `${i * 0.8}s`,        // stagger start times
-      left: `${getRandomLeft()}%`,
-      bottom: `${20 + Math.random() * 100}px`, // random bottom between 20px and 120px so not super bottom
-      transform: `rotate(${Math.random() * 60 - 30}deg)`,
-      width: "50px",
-      animationDuration: `${8 + Math.random() * 4}s`,
-    }}
-  />
-))}
-
-
+        <button type="submit" className="login-button">Enter</button>
+      </form>
     </div>
   );
-}
-
-const styles = {
-  page: {
-    height: "100vh",
-    width: "100vw",
-    background: "#fce4ec",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-    fontFamily: "'Comic Sans MS', cursive, sans-serif",
-    margin: 0,
-    padding: 0,
-  },
-  loginBox: {
-    background: "#ffb6c1",
-    borderRadius: "30px",
-    padding: "30px 40px",
-    boxShadow: "0 0 15px 5px #f48fb1",
-    position: "relative",
-    width: "280px",
-    textAlign: "center",
-    zIndex: 10,
-  },
-  logo: {
-    width: "150px",
-    marginBottom: "20px",
-    userSelect: "none",
-  },
-  input: {
-    display: "block",
-    width: "100%",
-    padding: "10px 15px",
-    marginBottom: "15px",
-    borderRadius: "20px",
-    border: "none",
-    fontSize: "14px",
-    fontFamily: "'Comic Sans MS', cursive, sans-serif",
-    outline: "none",
-  },
-  button: {
-    width: "100%",
-    padding: "12px",
-    borderRadius: "25px",
-    border: "none",
-    backgroundColor: "#f06292",
-    color: "white",
-    fontSize: "16px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-  floatingHead: {
-  position: "fixed",
-  animationName: "floatUp",
-  animationTimingFunction: "linear",
-  animationIterationCount: "infinite",
-  pointerEvents: "none",
-  userSelect: "none",
-  zIndex: 9999,
-  // no bottom here, we set it inline per head for random start
-},
-
 };
+
+export default Login;

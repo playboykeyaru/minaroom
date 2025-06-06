@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
-import Login from './components/Login'
-import Room from './components/Room'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Room from './components/Room'; // this will be the main room
 
-export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-
+function App() {
   return (
-    <>
-      {loggedIn ? <Room /> : <Login onLogin={() => setLoggedIn(true)} />}
-    </>
-  )
+    <BrowserRouter basename="/minaroom">
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/room" element={<Room />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
+export default App;

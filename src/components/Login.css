@@ -1,0 +1,101 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #ffe6f0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.login-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: rgba(255, 192, 203, 0.85);
+  border-radius: 24px;
+  padding: 1.5rem; /* smaller padding */
+  width: 260px; /* was 300px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem; /* slightly tighter spacing */
+  box-shadow: 0 0 20px rgba(255, 182, 193, 0.7);
+  z-index: 10;
+  position: relative;
+}
+.login-logo {
+  width: 100px;
+  margin-bottom: 1rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.6rem;
+  border: none; /* 👈 Remove black border */
+  border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 0.95rem;
+  text-align: center;
+  box-shadow: 0 0 6px rgba(255, 105, 180, 0.4);
+  outline: none;
+  background-color: #fff0f5;
+  color: #333;
+}
+
+.login-button {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+
+.login-button:hover {
+  transform: scale(1.05);
+  background-color: #ff1493;
+}
+
+.floating-kitty {
+  position: fixed;
+  bottom: -60px;
+  width: 50px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
+}
+
+.show-password {
+  font-size: 0.8rem;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color: #aa336a;
+  margin-top: -0.3rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
