@@ -27,7 +27,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === 'minh' && password === 'mina1303') {
+    if (username === 'minh' && password === 'mina') {
       navigate('/room');
     } else {
       alert("Wrong username or password!");

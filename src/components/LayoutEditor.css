@@ -1,0 +1,55 @@
+/* Reset margin and padding for whole page */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #fff; /* or whatever bg color you want */
+  overflow: hidden; /* prevent scrolling white gaps */
+}
+
+/* Wrapper to center the layout editor */
+.layout-editor-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff; /* match background */
+  margin: 0;
+  padding: 0;
+}
+
+/* The actual layout editor box */
+.layout-editor {
+  position: fixed; /* so it fills the whole screen and stays put */
+  top: 0;
+  left: 0;
+  width: 100vw;  /* full viewport width */
+  height: 100vh; /* full viewport height */
+  background-color: white;
+  border: none;  /* no border to keep it clean */
+  box-sizing: border-box;
+  overflow: hidden; /* no scroll if content overflows */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Just in case, remove any line-height or font-size causing gaps */
+* {
+  line-height: 1;
+  font-size: 16px;
+}
+
+/* Rnd draggable images styles */
+.movable-image, .background-image {
+  user-select: none; /* prevent weird text selection */
+  touch-action: none; /* better drag on touch devices */
+}
+
+/* Optional: no outline on drag */
+.movable-image:focus, .background-image:focus {
+  outline: none;
+}
+

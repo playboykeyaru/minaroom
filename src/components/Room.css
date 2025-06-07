@@ -1,0 +1,34 @@
+/* Room.css */
+.room-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff0f6; /* soft pink */
+}
+
+.background-image {
+  position: absolute;
+  top: -1.67px;
+  left: -1.67px;
+  width: 1283px;
+  height: 562px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.clickable-item {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.25s ease;
+  user-select: none;
+  /* no box-shadow here, no borders */
+}
+
+.clickable-item:hover,
+.clickable-item:focus {
+  transform: scale(1.1);
+  outline: none; /* just in case */
+  box-shadow: none; /* kill any shadow */
+}
