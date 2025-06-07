@@ -1,49 +1,39 @@
-// src/components/Login.jsx
+// src/Login.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const basePath = import.meta.env.BASE_URL || '/';
 
-const Login = ({ musicRef }) => {
+const Login = ({ navigate }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [kittyHeads, setKittyHeads] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const totalHeads = 18;
-    const heads = [...Array(totalHeads)].map(() => {
-      return {
-        id: crypto.randomUUID(),
-        left: Math.random() < 0.5 ? Math.random() * 40 : 60 + Math.random() * 40,
-        duration: 10 + Math.random() * 5,
-        delay: -(Math.random() * 5),
-        rotation: Math.random() * 60 - 30,
-      };
-    });
+    const heads = [...Array(totalHeads)].map(() => ({
+      id: crypto.randomUUID(),
+      left: Math.random() < 0.5 ? Math.random() * 40 : 60 + Math.random() * 40,
+      duration: 10 + Math.random() * 5,
+      delay: -(Math.random() * 5),
+      rotation: Math.random() * 60 - 30,
+    }));
     setKittyHeads(heads);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username === 'minh' && password === 'mina') {
-      // Start the music on login if paused
-      if (musicRef?.current && musicRef.current.paused) {
-        musicRef.current.play().catch(() => {
-          // just ignore play errors (autoplay blocked maybe)
-        });
-      }
+      sessionStorage.setItem('loggedIn', 'true');
       navigate('/room');
     } else {
-      alert("Wrong username or password!");
+      alert('Wrong username or password!');
     }
   };
 
   return (
     <div className="login-container">
-      {/* Floaty Kitty Heads */}
       {kittyHeads.map((head) => (
         <img
           key={head.id}
@@ -86,7 +76,6 @@ const Login = ({ musicRef }) => {
           autoComplete="current-password"
         />
 
-        {/* Show Password Toggle */}
         <label className="show-password">
           <input
             type="checkbox"

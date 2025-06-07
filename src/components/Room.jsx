@@ -1,4 +1,3 @@
-// src/components/Room.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Room.css';
@@ -52,8 +51,8 @@ const items = [
 
 const background = {
   src: '/minaroom/HKbedroom.jpg',
-  x: -1.66,
-  y: -1.66,
+  x: -1.666671633720398,
+  y: -1.6666686534881592,
   width: 1283,
   height: 562,
 };
@@ -66,10 +65,12 @@ const guideSteps = [
   { text: "And if you ever need to talk to me... click on me! 💬", highlight: 'KittyAi' },
 ];
 
-const Room = ({ musicRef }) => {
+const Room = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [isGuideActive, setIsGuideActive] = useState(true);
+  const [isGuideActive, setIsGuideActive] = useState(() => {
+    return sessionStorage.getItem('guideSeen') !== 'true';
+  });
   const [isBouncing, setIsBouncing] = useState(false);
   const nextSound = useRef(new Audio(nextSoundUrl));
   const doneSound = useRef(new Audio(doneSoundUrl));
@@ -90,11 +91,13 @@ const Room = ({ musicRef }) => {
       setStep(step + 1);
     } else {
       doneSound.current.play().catch(() => {});
+      sessionStorage.setItem('guideSeen', 'true');
       setIsGuideActive(false);
     }
   };
 
   const handleSkip = () => {
+    sessionStorage.setItem('guideSeen', 'true');
     setIsGuideActive(false);
   };
 
@@ -105,13 +108,6 @@ const Room = ({ musicRef }) => {
       navigate(link);
     }
   };
-
-  // Start music if paused (just in case)
-  useEffect(() => {
-    if (musicRef?.current && musicRef.current.paused) {
-      musicRef.current.play().catch(() => {});
-    }
-  }, [musicRef]);
 
   return (
     <div className="room-container">
@@ -135,9 +131,7 @@ const Room = ({ musicRef }) => {
           alt={alt}
           className={`clickable-item ${
             isGuideActive && currentHighlight !== id && !(step === 0 && id === 'KittyAi') ? 'dimmed' : ''
-          } ${currentHighlight === id ? 'highlighted-item' : ''} ${
-            id === 'KittyAi' && step === 0 ? '' : 'glow' // no glow at step 0 on kitty
-          }`}
+          } ${currentHighlight === id ? 'highlighted-item' : ''}`}
           style={{ top: y, left: x, width, height }}
           onClick={() => handleNavigate(link, id)}
           tabIndex={0}
