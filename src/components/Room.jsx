@@ -1,6 +1,11 @@
-import React from 'react';
+// src/components/Room.jsx
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Room.css';
+import './HelloKittyGuide.css';
+
+const nextSoundUrl = '/minaroom/sounds/next-click.mp3';
+const doneSoundUrl = '/minaroom/sounds/done-chime.mp3';
 
 const items = [
   {
@@ -47,14 +52,66 @@ const items = [
 
 const background = {
   src: '/minaroom/HKbedroom.jpg',
-  x: -1.666671633720398,
-  y: -1.6666686534881592,
+  x: -1.66,
+  y: -1.66,
   width: 1283,
   height: 562,
 };
 
-const Room = () => {
+const guideSteps = [
+  { text: "Hewwo Nini! I'm Kitty! Let me show you how your room works ✨", highlight: null },
+  { text: "This is your cawendar! Each day has a love letter for you 💌", highlight: 'calendar' },
+  { text: "This is your toy! Click it for a surprise puzzle 🎮", highlight: 'puzzle' },
+  { text: "This is your awbum... full of our memories 📸", highlight: 'album' },
+  { text: "And if you ever need to talk to me... click on me! 💬", highlight: 'KittyAi' },
+];
+
+const Room = ({ musicRef }) => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(0);
+  const [isGuideActive, setIsGuideActive] = useState(true);
+  const [isBouncing, setIsBouncing] = useState(false);
+  const nextSound = useRef(new Audio(nextSoundUrl));
+  const doneSound = useRef(new Audio(doneSoundUrl));
+
+  useEffect(() => {
+    if (!isGuideActive) return;
+
+    if (step > 0 && step < guideSteps.length) {
+      setIsBouncing(true);
+      nextSound.current.play().catch(() => {});
+      const bounceTimeout = setTimeout(() => setIsBouncing(false), 600);
+      return () => clearTimeout(bounceTimeout);
+    }
+  }, [step, isGuideActive]);
+
+  const handleNext = () => {
+    if (step < guideSteps.length - 1) {
+      setStep(step + 1);
+    } else {
+      doneSound.current.play().catch(() => {});
+      setIsGuideActive(false);
+    }
+  };
+
+  const handleSkip = () => {
+    setIsGuideActive(false);
+  };
+
+  const currentHighlight = isGuideActive ? guideSteps[step].highlight : null;
+
+  const handleNavigate = (link, itemId) => {
+    if (!isGuideActive || itemId === 'KittyAi') {
+      navigate(link);
+    }
+  };
+
+  // Start music if paused (just in case)
+  useEffect(() => {
+    if (musicRef?.current && musicRef.current.paused) {
+      musicRef.current.play().catch(() => {});
+    }
+  }, [musicRef]);
 
   return (
     <div className="room-container">
@@ -70,23 +127,44 @@ const Room = () => {
         }}
         draggable={false}
       />
+
       {items.map(({ id, src, alt, x, y, width, height, link }) => (
         <img
-          key={id}
+          key={link}
           src={src}
           alt={alt}
-          className="clickable-item"
+          className={`clickable-item ${
+            isGuideActive && currentHighlight !== id && !(step === 0 && id === 'KittyAi') ? 'dimmed' : ''
+          } ${currentHighlight === id ? 'highlighted-item' : ''} ${
+            id === 'KittyAi' && step === 0 ? '' : 'glow' // no glow at step 0 on kitty
+          }`}
           style={{ top: y, left: x, width, height }}
-          onClick={() => navigate(link)}
+          onClick={() => handleNavigate(link, id)}
           tabIndex={0}
           onKeyDown={e => {
-            if (e.key === 'Enter') navigate(link);
+            if (e.key === 'Enter') handleNavigate(link, id);
           }}
           role="button"
           aria-label={`Go to ${alt}`}
           draggable={false}
         />
       ))}
+
+      {isGuideActive && (
+        <div className="hello-kitty-guide" style={{ zIndex: 50 }}>
+          <div className={`speech-bubble ${isBouncing ? 'bounce' : ''}`}>
+            <p>{guideSteps[step].text}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <button className="next-button" onClick={handleNext}>
+                {step < guideSteps.length - 1 ? 'Next' : 'Done'}
+              </button>
+              <button className="next-button" onClick={handleSkip}>
+                Skip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

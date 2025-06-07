@@ -1,10 +1,11 @@
+// src/components/Login.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const basePath = import.meta.env.BASE_URL || '/';
 
-const Login = () => {
+const Login = ({ musicRef }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +29,12 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username === 'minh' && password === 'mina') {
+      // Start the music on login if paused
+      if (musicRef?.current && musicRef.current.paused) {
+        musicRef.current.play().catch(() => {
+          // just ignore play errors (autoplay blocked maybe)
+        });
+      }
       navigate('/room');
     } else {
       alert("Wrong username or password!");
@@ -49,6 +56,7 @@ const Login = () => {
             animationDelay: `${head.delay}s`,
             transform: `rotate(${head.rotation}deg)`,
           }}
+          draggable={false}
         />
       ))}
 
@@ -57,6 +65,7 @@ const Login = () => {
           src={`${basePath}HKloginLogo.png`}
           alt="Hello Kitty"
           className="login-logo"
+          draggable={false}
         />
 
         <input
@@ -65,6 +74,7 @@ const Login = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="login-input"
+          autoComplete="username"
         />
 
         <input
@@ -73,6 +83,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="login-input"
+          autoComplete="current-password"
         />
 
         {/* Show Password Toggle */}
