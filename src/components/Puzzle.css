@@ -1,0 +1,25 @@
+.puzzle-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 400px;
+  margin: 1rem auto;
+}
+
+.puzzle-piece {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.puzzle-piece:hover {
+  border-color: #f48fb1; /* cute pink glow */
+}

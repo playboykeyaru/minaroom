@@ -1,81 +1,68 @@
-// src/MusicPlayer.jsx
+import React, { useState, useEffect, useRef } from 'react';
 
-import React, { useRef, useState, useEffect } from 'react';
-
-const playlist = [
-  '/minaroom/sounds/song1.mp3',
-  '/minaroom/sounds/song2.mp3',
-  '/minaroom/sounds/song3.mp3',
-  '/minaroom/sounds/song4.mp3',
+const songs = [
+  "/minaroom/sounds/song1.mp3",
+  "/minaroom/sounds/song2.mp3",
+  "/minaroom/sounds/song3.mp3",
+  "/minaroom/sounds/song4.mp3",
 ];
 
 const MusicPlayer = ({ isVisible }) => {
-  const audioRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(() => Math.floor(Math.random() * playlist.length));
-  const [isPlaying, setIsPlaying] = useState(true);
+  const musicRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSongIndex, setCurrentSongIndex] = useState(() => Math.floor(Math.random() * songs.length));
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    if (musicRef.current) {
+      musicRef.current.src = songs[currentSongIndex];
+    }
+  }, []);
 
-    audio.src = playlist[currentIndex];
-    audio.load();
-    audio.play().catch(() => setIsPlaying(false));
-  }, [currentIndex]);
-
-  const handleEnded = () => {
-    const nextIndex = (currentIndex + 1) % playlist.length;
-    setCurrentIndex(nextIndex);
+  const handleSongEnd = () => {
+    const nextIndex = (currentSongIndex + 1) % songs.length;
+    setCurrentSongIndex(nextIndex);
+    if (musicRef.current) {
+      musicRef.current.src = songs[nextIndex];
+      musicRef.current.play().catch(() => {});
+    }
   };
 
   const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
+    if (!musicRef.current) return;
     if (isPlaying) {
-      audio.pause();
+      musicRef.current.pause();
+      setIsPlaying(false);
     } else {
-      audio.play().catch(() => {});
+      musicRef.current.play().catch(() => {});
+      setIsPlaying(true);
     }
-
-    setIsPlaying(!isPlaying);
   };
 
   return (
     <>
-      <audio
-        ref={audioRef}
-        onEnded={handleEnded}
-        preload="auto"
-        autoPlay
-      />
-
+      <audio ref={musicRef} preload="auto" onEnded={handleSongEnd} />
       {isVisible && (
-        <div
+        <button
+          className="music-button"
           onClick={togglePlay}
+          title="Play one of the 4 songs I picked for you 🎵"
           style={{
             position: 'fixed',
-            top: 20,
-            right: 20,
-            background: 'rgba(255, 105, 180, 0.95)',
-            borderRadius: 30,
-            padding: '12px 24px',
-            boxShadow: '0 0 15px rgba(255, 20, 147, 0.8)',
+            top: '10px',
+            right: '10px',
+            backgroundColor: '#ff69b4',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            color: 'white',
             cursor: 'pointer',
-            userSelect: 'none',
-            zIndex: 1000,
             fontWeight: 'bold',
-            fontFamily: "'Comic Sans MS', cursive, sans-serif",
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            fontSize: '1.1rem',
-            transition: 'background-color 0.3s ease',
+            fontSize: '14px',
+            zIndex: 1000,
           }}
         >
-          {isPlaying ? '🔊 Pause' : '🔈 Play'}
-        </div>
+          {isPlaying ? '🔈 Pause' : '🔊 Play'}
+        </button>
       )}
     </>
   );

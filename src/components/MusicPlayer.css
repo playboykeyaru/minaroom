@@ -1,0 +1,27 @@
+.music-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #ff69b4;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 1000;
+  position: relative; /* needed for tooltip */
+}
+
+.tooltip-text {
+  opacity: 0;
+  visibility: hidden;
+  /* no transition */
+}
+
+.music-button:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+

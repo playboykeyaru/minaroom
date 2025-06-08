@@ -58,11 +58,11 @@ const background = {
 };
 
 const guideSteps = [
-  { text: "Hewwo Nini! I'm Kitty! Let me show you how your room works ✨", highlight: null },
-  { text: "This is your cawendar! Each day has a love letter for you 💌", highlight: 'calendar' },
-  { text: "This is your toy! Click it for a surprise puzzle 🎮", highlight: 'puzzle' },
-  { text: "This is your awbum... full of our memories 📸", highlight: 'album' },
-  { text: "And if you ever need to talk to me... click on me! 💬", highlight: 'KittyAi' },
+  { text: "Hewwo Mina! I'm Kitty! Let me show you how your room works ✨", highlight: null },
+  { text: "This is your calendar! Each day has a love letter for you 💌", highlight: 'calendar' },
+  { text: "This is ! Click ia puzzle that you can do during your free time 🎮", highlight: 'puzzle' },
+  { text: "This is your awbum... full of memories 📸", highlight: 'album' },
+  { text: "And if you ever need to talk to me... click on me! i will be your friend! 💬", highlight: 'KittyAi' },
 ];
 
 const Room = () => {
