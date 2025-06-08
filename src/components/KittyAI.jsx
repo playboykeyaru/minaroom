@@ -31,7 +31,7 @@ const KittyAi = () => {
           messages: [
             {
               role: 'user',
-              content: "You are Hello Kitty, a kind and sweet AI friend. be beloving language be also mature."
+              content: "You are Hello Kitty, a AI friend."
             },
             { role: 'user', content: userText }
           ]
