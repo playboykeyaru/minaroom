@@ -24,10 +24,10 @@ const KittyAi = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', // 👈 put your key here
+          'Authorization': 'Bearer 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', // 👈 put your key here
         },
         body: JSON.stringify({
-          model: 'deepseek/deepseek-r1-0528-qwen3-8b:free',
+          model: 'deepseek/deepseek-r1-0528:free',
           messages: [
             {
               role: 'system',
