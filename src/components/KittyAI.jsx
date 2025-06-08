@@ -24,10 +24,10 @@ const KittyAi = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', // 👈 put your key here
+          'Authorization': 'Bearer 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', // 👈 put your key here
         },
         body: JSON.stringify({
-          model: 'openai/gpt-3.5-turbo',
+          model: 'deepseek/deepseek-r1-0528-qwen3-8b:free',
           messages: [
             {
               role: 'system',
