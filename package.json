@@ -1,7 +1,7 @@
 {
   "name": "minaroom",
-  "private": true,
   "version": "0.0.0",
+  "homepage": "https://playboykeyaru.github.io/minaroom",
   "type": "module",
   "scripts": {
     "dev": "vite",
