@@ -20,18 +20,18 @@ const KittyAi = () => {
 
   const getReply = async (userText) => {
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', // 👈 put your key here
+          'Authorization': 'Bearer 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', // 👈 put your key here
         },
         body: JSON.stringify({
-          model: 'deepseek/deepseek-r1-0528:free',
+          model: 'meta-llama/llama-4-scout-17b-16e-instruct',
           messages: [
             {
-              role: 'system',
-              content: "You are Hello Kitty, a kind and sweet AI friend. Respond like a cute friend named Kitty who adores MIna and always replies with soft, caring vibes. beloving language be also mature."
+              role: 'user',
+              content: "You are Hello Kitty, a kind and sweet AI friend. be beloving language be also mature."
             },
             { role: 'user', content: userText }
           ]
